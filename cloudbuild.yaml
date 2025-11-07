@@ -1,20 +1,16 @@
 steps:
-  # Docker Build 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', 
-            '-t', 
-            'northamerica-northeast2-docker.pkg.dev/gcp-class-17/maduvan-app-repo/bank-app-frontend', 
+            '--build-arg', 'REACT_APP_API_URL=https://maduvan-bank-app-backend-1096816685031.northamerica-northeast2.run.app/api/v1',
+            '-t', 'northamerica-northeast2-docker.pkg.dev/gcp-class-17/maduvan-app-repo/bank-app-frontend', 
             '.']
 
-  # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 
             'northamerica-northeast2-docker.pkg.dev/gcp-class-17/maduvan-app-repo/bank-app-frontend']
 
-  # Entrypoint, timeout and environment variables
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
-    timeout: 240s
     args: ['run', 
             'deploy', 
             'maduvan-bank-app-frontend',
